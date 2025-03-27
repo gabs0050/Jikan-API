@@ -1,3 +1,4 @@
+'use strict'
 import { searchAnime } from './apiService.js';
 
 document.addEventListener('DOMContentLoaded', function() {

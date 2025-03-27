@@ -1,4 +1,4 @@
-// character-details.js
+'use strict'
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const characterId = urlParams.get('id');

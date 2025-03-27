@@ -1,3 +1,5 @@
+'use strict'
+
 // personagens.js - Versão corrigida e completa
 import { searchAnime } from './apiService.js';
 
