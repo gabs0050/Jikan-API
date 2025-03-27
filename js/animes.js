@@ -1,3 +1,5 @@
+'use strict';
+
 import { searchAnime, getTopAnimes } from '../js/apiService.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
