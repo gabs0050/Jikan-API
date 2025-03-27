@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/animes.css">
-    <script type="module" src="/js/animes.js" defer></script>
-    <title>Página Inicial</title>
+    <link rel="stylesheet" href="/css/character-details.css">
+    <title>Detalhes do Personagem</title>
 </head>
 <body>
     <header>
@@ -15,7 +14,7 @@
                     <img src="./img/logo.png" alt="Logo">
                     <li><a href="./home.html">Início</a></li>
                     <li><a href="./personagens.html">Personagens</a></li>
-                    <li><a href="">Animes</a></li>
+                    <li><a href="./animes.html">Animes</a></li>
                     <li>
                         <div class="box">
                             <img src="./img/search.png" alt="">
@@ -27,5 +26,11 @@
         </div>
     </header>
 
+    <main class="character-details-container" id="character-details-container">
+        <!-- Os detalhes serão carregados aqui via JavaScript -->
+        <div class="loading">Carregando detalhes do personagem...</div>
+    </main>
+
+    <script type="module" src="/js/character-details.js"></script>
 </body>
 </html>
