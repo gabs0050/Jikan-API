@@ -1,6 +1,12 @@
 import { searchAnime } from './apiService.js';
 
-// Função para destacar link ativo
+document.addEventListener('DOMContentLoaded', function() {
+    setActiveLink();
+    window.addEventListener('popstate', setActiveLink);
+    setupSearch();
+    fetchAndDisplayRecommendations();
+});
+
 function setActiveLink() {
     const currentPage = window.location.pathname.split('/').pop().toLowerCase();
     const navLinks = document.querySelectorAll('nav a');
@@ -23,47 +29,39 @@ function setActiveLink() {
     });
 }
 
-// Configura a pesquisa
 function setupSearch() {
     const searchInput = document.getElementById('pesquisarAnime');
     const searchBox = document.querySelector('.box');
     
-    // Debounce para evitar muitas requisições
     let debounceTimer;
     searchInput.addEventListener('input', (e) => {
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => {
             const query = e.target.value.trim();
-            if (query.length > 2) { // Só pesquisa com pelo menos 3 caracteres
+            if (query.length > 2) {
                 performSearch(query);
             }
         }, 500);
     });
     
-    // Foco no input quando clicar na lupa
     searchBox.addEventListener('click', () => {
         searchInput.focus();
     });
 }
 
-// Executa a pesquisa e exibe resultados
 async function performSearch(query) {
     const animes = await searchAnime(query);
     displayResults(animes);
 }
 
-// Exibe os resultados na página
 function displayResults(animes) {
-    // Remove resultados anteriores
     const oldResults = document.getElementById('search-results');
     if (oldResults) oldResults.remove();
     
     if (animes.length === 0) {
-        // Pode mostrar uma mensagem de "Nenhum resultado encontrado"
         return;
     }
     
-    // Cria container para resultados
     const resultsContainer = document.createElement('div');
     resultsContainer.id = 'search-results';
     resultsContainer.style.position = 'absolute';
@@ -75,7 +73,6 @@ function displayResults(animes) {
     resultsContainer.style.zIndex = '1000';
     resultsContainer.style.borderRadius = '0 0 10px 10px';
     
-    // Adiciona cada anime como um item
     animes.forEach(anime => {
         const animeElement = document.createElement('div');
         animeElement.style.padding = '10px';
@@ -97,24 +94,21 @@ function displayResults(animes) {
         `;
         
         animeElement.addEventListener('click', () => {
-            window.location.href = `anime-details.html?id=${anime.mal_id}`;
+            window.location.href = `src/anime-details.html?id=${anime.mal_id}`;
         });
         
         resultsContainer.appendChild(animeElement);
     });
     
-    // Adiciona os resultados abaixo da barra de pesquisa
     const searchBox = document.querySelector('.box');
     searchBox.appendChild(resultsContainer);
 }
 
-// Funções para o carrossel de recomendações
 async function fetchAndDisplayRecommendations() {
     try {
         const response = await fetch('https://api.jikan.moe/v4/recommendations/anime');
         const data = await response.json();
         
-        // Processar os dados para pegar apenas 10 recomendações únicas
         const uniqueAnimes = [];
         const addedAnimeIds = new Set();
         
@@ -146,7 +140,7 @@ function displayRecommendations(animes) {
         const animeElement = document.createElement('div');
         animeElement.className = 'carousel-item';
         animeElement.innerHTML = `
-            <a href="anime-details.html?id=${anime.id}" style="text-decoration: none; color: inherit;">
+            <a href="src/anime-details.html?id=${anime.id}" style="text-decoration: none; color: inherit;">
                 <img src="${anime.image}" alt="${anime.title}">
                 <div class="carousel-item-info">
                     <h3>${anime.title}</h3>
@@ -165,14 +159,14 @@ function setupCarousel() {
     const prevBtn = document.querySelector('.prev-btn');
     
     let currentIndex = 0;
-    const itemWidth = items[0].offsetWidth + 20; // Largura do item + gap
+    const itemWidth = items[0].offsetWidth + 20;
     
     function updateCarousel() {
         track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
     }
     
     nextBtn.addEventListener('click', () => {
-        if (currentIndex < items.length - 4) { // Mostra 4 itens por vez
+        if (currentIndex < items.length - 4) {
             currentIndex++;
             updateCarousel();
         }
@@ -185,7 +179,6 @@ function setupCarousel() {
         }
     });
     
-    // Auto-rotate every 5 seconds
     setInterval(() => {
         if (currentIndex < items.length - 4) {
             currentIndex++;
@@ -195,11 +188,3 @@ function setupCarousel() {
         updateCarousel();
     }, 5000);
 }
-
-// Inicializa tudo quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', function() {
-    setActiveLink();
-    window.addEventListener('popstate', setActiveLink);
-    setupSearch();
-    fetchAndDisplayRecommendations();
-});
