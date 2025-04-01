@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Configurações
-const MAX_POPULAR_ANIMES = 12;
+const MAX_POPULAR_ANIMES = 25;
 const MAX_SEARCH_RESULTS = 5;
 
 // Função para destacar link ativo
